@@ -1,7 +1,7 @@
 const PulseSearch=(()=>{
   const AUDIO='https://api.audius.co/v1/tracks/search';
   const WORKER='https://pulse-music-search.7dfwjtvpzn.workers.dev';
-  const KEY='pulse_search_proxy';
+  const KEY='pulse_search_proxy_v2';
   const clean=s=>String(s||'').replace(/\s+/g,' ').trim();
   async function json(url){const r=await fetch(url,{headers:{Accept:'application/json'}});if(!r.ok)throw new Error(`Search service returned ${r.status}`);return r.json()}
   async function audio(q){const u=new URL(AUDIO);u.searchParams.set('query',q);u.searchParams.set('limit','20');u.searchParams.set('app_name','PulseMusic');const d=await json(u);return(d.data||[]).map(t=>({id:`audius:${t.id}`,audioId:t.id,source:'audio',title:t.title||'Untitled',artist:t.user?.name||'Unknown artist',album:t.playlist_name||'',art:t.artwork?.['480x480']||t.artwork?.['150x150']||'',provider:'Audius',duration:t.duration||0}))}
