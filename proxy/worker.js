@@ -1,1 +1,4 @@
-
+const INSTANCES=['https://inv.nadeko.net','https://invidious.nerdvpn.de','https://yt.chocolatemoo53.com'];
+const CORS={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'GET,OPTIONS','Access-Control-Allow-Headers':'Content-Type'};
+const json=(x,s=200)=>new Response(JSON.stringify(x),{status:s,headers:{...CORS,'Content-Type':'application/json;charset=utf-8'}});
+export default{async fetch(req){const u=new URL(req.url);if(req.method==='OPTIONS')return new Response(null,{status:204,headers:CORS});if(u.pathname!='/search')return json({error:'Use /search?q=...'},404);const q=u.searchParams.get('q')?.trim();if(!q)return json({error:'Missing q'},400);for(const base of INSTANCES){try{const r=await fetch(`${base}/api/v1/search?q=${encodeURIComponent(q)}&type=video&sort_by=relevance`,{headers:{Accept:'application/json'}});if(!r.ok)continue;const d=await r.json();return json((Array.isArray(d)?d:[]).filter(x=>x.type==='video').slice(0,30).map(x=>({videoId:x.videoId,title:x.title,author:x.author,thumbnail:x.videoThumbnails?.[0]?.url||''})));}catch{}}return json({error:'Search instances are temporarily unavailable.'},502)}};
