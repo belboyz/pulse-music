@@ -25,14 +25,10 @@ const json = (data, status = 200, extraHeaders = {}) =>
 
 async function searchInstance(base, query) {
   const controller = new AbortController();
-
-  const timeout = setTimeout(() => {
-    controller.abort();
-  }, 7000);
+  const timeout = setTimeout(() => controller.abort(), 7000);
 
   try {
     const url = new URL('/api/v1/search', base);
-
     url.searchParams.set('q', query);
     url.searchParams.set('type', 'video');
     url.searchParams.set('sort_by', 'relevance');
@@ -64,31 +60,19 @@ async function searchInstance(base, query) {
 
 function normalizeResults(data) {
   return data
-    .filter(item => {
-      return item &&
-        item.type === 'video' &&
-        item.videoId;
-    })
+    .filter(item => item && item.type === 'video' && item.videoId)
     .slice(0, 30)
     .map(item => ({
       videoId: item.videoId,
       title: item.title || '',
       author: item.author || '',
-
       thumbnail:
-        item.videoThumbnails?.find(
-          thumbnail => thumbnail.quality === 'medium'
-        )?.url ||
+        item.videoThumbnails?.find(t => t.quality === 'medium')?.url ||
         item.videoThumbnails?.[0]?.url ||
         '',
-
       duration: Number(item.lengthSeconds || 0),
-
-      publishedText:
-        item.publishedText || '',
-
-      viewCount:
-        Number(item.viewCount || 0)
+      publishedText: item.publishedText || '',
+      viewCount: Number(item.viewCount || 0)
     }));
 }
 
@@ -96,9 +80,6 @@ export default {
   async fetch(request) {
     const url = new URL(request.url);
 
-    /*
-     * Handle CORS preflight
-     */
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         status: 204,
@@ -106,9 +87,6 @@ export default {
       });
     }
 
-    /*
-     * Worker status page
-     */
     if (url.pathname === '/') {
       return json({
         ok: true,
@@ -118,27 +96,18 @@ export default {
       });
     }
 
-    /*
-     * Only /search is supported
-     */
     if (url.pathname !== '/search') {
       return json({
         error: 'Use /search?q=...'
       }, 404);
     }
 
-    /*
-     * Only GET requests are supported
-     */
     if (request.method !== 'GET') {
       return json({
         error: 'Method not allowed'
       }, 405);
     }
 
-    /*
-     * Get search query
-     */
     const query = url.searchParams.get('q')?.trim();
 
     if (!query) {
@@ -147,20 +116,10 @@ export default {
       }, 400);
     }
 
-    /*
-     * Try all configured Invidious instances.
-     *
-     * Promise.any() means the first successful
-     * instance is used.
-     */
     try {
-      const result = await Promise.any(
+      const results = await Promise.any(
         INSTANCES.map(async instance => {
-          const data = await searchInstance(
-            instance,
-            query
-          );
-
+          const data = await searchInstance(instance, query);
           return {
             instance,
             data
@@ -168,32 +127,16 @@ export default {
         })
       );
 
-      /*
-       * Convert Invidious response into the
-       * format expected by Pulse Music.
-       */
-      const results = normalizeResults(
-        result.data
-      );
-
       return json({
         query,
-        results
+        results: normalizeResults(results.data)
       }, 200, {
         'Cache-Control': 'public, max-age=60'
       });
-
-    } catch (error) {
-
-      /*
-       * Every configured instance failed.
-       */
+    } catch {
       return json({
-        error:
-          'Search instances are temporarily unavailable.',
-
-        message:
-          'All configured Invidious instances failed or timed out.'
+        error: 'Search instances are temporarily unavailable.',
+        message: 'All configured Invidious instances failed or timed out.'
       }, 502);
     }
   }
