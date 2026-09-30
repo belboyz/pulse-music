@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090a0f">
+  <meta name="description" content="Pulse Music — personal music player PWA">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Pulse Music</title>
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="ambient ambient-c"></div>
+  <div class="app-shell" id="app">
+    <header class="topbar">
+      <button class="brand" data-nav="home" aria-label="Pulse Home"><span class="brand-mark"><i data-lucide="audio-lines"></i></span><span>Pulse</span></button>
+      <div class="top-actions"><button class="icon-btn glass" id="topSearch" aria-label="Search"><i data-lucide="search"></i></button><button class="icon-btn glass" id="themeBtn" aria-label="Change theme"><i data-lucide="sun-moon"></i></button></div>
+    </header>
+
+    <main id="views">
+      <section class="view active" data-view="home">
+        <div class="home-intro"><div><span class="eyebrow" id="greetingLabel">GOOD EVENING</span><h1>Your music.<br><em>Your space.</em></h1></div><div class="intro-orb"><span></span></div></div>
+        <article class="hero-card glass">
+          <div class="hero-content"><div class="pill"><i data-lucide="sparkles"></i> LIQUID GLASS</div><h2>Listen without<br><span>losing the mood.</span></h2><p>Search, play, save, and continue your music from one calm player.</p><button class="primary-btn" data-nav="search"><i data-lucide="search"></i> Find music</button></div>
+          <div class="hero-art"><div class="hero-art-glow"></div><div class="hero-cover"><i data-lucide="music-2"></i></div><span class="hero-ring ring-1"></span><span class="hero-ring ring-2"></span></div>
+        </article>
+
+        <div class="section-head"><div><span class="section-kicker">YOUR LIBRARY</span><h2>Quick access</h2></div><button class="text-btn" data-nav="library">See all</button></div>
+        <div class="quick-grid">
+          <button class="quick-card glass" data-action="favorites"><span class="quick-icon"><i data-lucide="heart"></i></span><strong>Liked Songs</strong><small id="favCount">0 songs</small></button>
+          <button class="quick-card glass" data-action="history"><span class="quick-icon"><i data-lucide="history"></i></span><strong>Recently Played</strong><small id="historyCount">0 songs</small></button>
+          <button class="quick-card glass" data-action="queue"><span class="quick-icon"><i data-lucide="list-music"></i></span><strong>Up Next</strong><small id="queueCount">0 songs</small></button>
+        </div>
+
+        <div class="section-head"><div><span class="section-kicker">KEEP LISTENING</span><h2>Recently played</h2></div></div>
+        <div id="recentList" class="track-rail"></div>
+        <div id="homeEmpty" class="empty-state glass"><div class="empty-icon"><i data-lucide="music-2"></i></div><h3>Your listening starts here</h3><p>Search for a song or artist and build your personal library.</p><button class="secondary-btn" data-nav="search">Explore music</button></div>
+      </section>
+
+      <section class="view" data-view="search">
+        <div class="page-heading"><span class="eyebrow">DISCOVER</span><h1>Search music</h1><p>Find music by title, artist, or keyword.</p></div>
+        <div class="search-box glass"><i data-lucide="search"></i><input id="searchInput" autocomplete="off" spellcheck="false" placeholder="What do you want to play?"><button id="clearSearch" class="icon-btn small hidden" aria-label="Clear search"><i data-lucide="x"></i></button></div>
+        <div class="source-tabs" role="tablist"><button class="source-tab active" data-source="all">All</button><button class="source-tab" data-source="audio">Audio</button><button class="source-tab" data-source="video">YouTube</button></div>
+        <div class="search-status" id="searchStatus"></div>
+        <div id="searchResults" class="track-list"></div>
+        <div id="searchEmpty" class="empty-state glass"><div class="empty-icon"><i data-lucide="search"></i></div><h3>Find something you love</h3><p>Type a song title or artist name above.</p></div>
+      </section>
+
+      <section class="view" data-view="library">
+        <div class="page-heading"><span class="eyebrow">YOUR LIBRARY</span><h1>Library</h1><p>Your favorites, history and playlists stay on this device.</p></div>
+        <div class="library-hero glass"><div><span class="section-kicker">PULSE COLLECTION</span><h2>Made for your listening.</h2></div><div class="library-stats"><span><b id="libFav">0</b><small>liked</small></span><span><b id="libHistory">0</b><small>history</small></span><span><b id="libPlaylists">0</b><small>playlists</small></span></div></div>
+        <div class="library-tabs"><button class="tab active" data-tab="favorites">Liked Songs</button><button class="tab" data-tab="history">History</button><button class="tab" data-tab="playlists">Playlists</button></div>
+        <div class="section-head compact"><h2 id="libraryTitle">Liked Songs</h2><button class="text-btn" id="newPlaylistBtn">New playlist</button></div>
+        <div id="libraryContent" class="track-list"></div>
+      </section>
+
+      <section class="view" data-view="settings">
+        <div class="page-heading"><span class="eyebrow">PERSONALIZE</span><h1>Settings</h1><p>Shape Pulse around the way you listen.</p></div>
+        <div class="settings-group"><div class="group-label">Appearance</div>
+          <button class="setting glass" id="themeSetting"><span class="setting-icon"><i data-lucide="palette"></i></span><span class="setting-copy"><b>Theme</b><small id="themeValue">System</small></span><i data-lucide="chevron-right"></i></button>
+          <button class="setting glass" id="glassSetting"><span class="setting-icon"><i data-lucide="layers-3"></i></span><span class="setting-copy"><b>Liquid Glass</b><small>Blurred surfaces and soft depth</small></span><span class="switch on" id="glassSwitch"><span></span></span></button>
+        </div>
+        <div class="settings-group"><div class="group-label">Playback</div>
+          <button class="setting glass" id="autoplaySetting"><span class="setting-icon"><i data-lucide="play-circle"></i></span><span class="setting-copy"><b>Autoplay</b><small>Continue to the next track</small></span><span class="switch on" id="autoplaySwitch"><span></span></span></button>
+          <button class="setting glass" id="crossfadeSetting"><span class="setting-icon"><i data-lucide="blend"></i></span><span class="setting-copy"><b>Crossfade</b><small id="crossfadeValue">Off</small></span><i data-lucide="chevron-right"></i></button>
+          <button class="setting glass" id="sleepSetting"><span class="setting-icon"><i data-lucide="moon"></i></span><span class="setting-copy"><b>Sleep timer</b><small id="sleepValue">Off</small></span><i data-lucide="chevron-right"></i></button>
+        </div>
+        <div class="settings-group"><div class="group-label">Search</div>
+          <button class="setting glass" id="proxySetting"><span class="setting-icon"><i data-lucide="server"></i></span><span class="setting-copy"><b>Search proxy</b><small id="proxyValue">Cloudflare Worker</small></span><i data-lucide="chevron-right"></i></button>
+        </div>
+        <div class="settings-group"><div class="group-label">Data</div><button class="setting glass danger" id="clearData"><span class="setting-icon"><i data-lucide="trash-2"></i></span><span class="setting-copy"><b>Clear local data</b><small>Favorites, history, queue and playlists</small></span></button></div>
+        <div class="about glass"><div class="about-mark"><i data-lucide="audio-lines"></i></div><div><b>Pulse Music</b><small>v7.1 · Liquid Glass PWA</small></div></div>
+      </section>
+    </main>
+
+    <div id="miniPlayer" class="mini-player glass hidden"><div class="mini-art" id="miniArt"><i data-lucide="music-2"></i></div><div class="mini-copy"><b id="miniTitle">No track</b><small id="miniArtist">Choose something to play</small><div class="mini-progress"><span id="miniProgress"></span></div></div><button class="mini-control" id="miniPrev" aria-label="Previous"><i data-lucide="skip-back"></i></button><button class="mini-play" id="miniPlay" aria-label="Play"><i data-lucide="play"></i></button><button class="mini-control" id="miniOpen" aria-label="Open player"><i data-lucide="chevron-up"></i></button></div>
+
+    <nav class="bubble-nav glass" aria-label="Main navigation">
+      <button class="nav-item active" data-nav="home"><i data-lucide="house"></i><span>Home</span></button>
+      <button class="nav-item" data-nav="search"><i data-lucide="search"></i><span>Search</span></button>
+      <button class="nav-main" id="navPlayer" aria-label="Open player"><span><i data-lucide="play"></i></span></button>
+      <button class="nav-item" data-nav="library"><i data-lucide="library"></i><span>Library</span></button>
+      <button class="nav-item" data-nav="settings"><i data-lucide="settings-2"></i><span>Settings</span></button>
+    </nav>
+  </div>
+
+  <div id="playerSheet" class="sheet" aria-hidden="true"><div class="sheet-backdrop" data-close-player></div><section class="player-panel glass"><div class="sheet-handle"></div><header class="player-top"><button class="icon-btn glass" data-close-player aria-label="Close"><i data-lucide="chevron-down"></i></button><span>NOW PLAYING</span><button class="icon-btn glass" id="playerMore" aria-label="More"><i data-lucide="more-horizontal"></i></button></header><div class="player-backdrop" id="playerBackdrop"></div><div class="player-art" id="playerArt"><i data-lucide="music-2"></i></div><div class="player-meta"><div><h2 id="playerTitle">No track selected</h2><p id="playerArtist">Choose a track from Search</p></div><button class="icon-btn glass" id="favoriteBtn" aria-label="Like"><i data-lucide="heart"></i></button></div><div class="progress-wrap"><input id="progressRange" type="range" min="0" max="1000" value="0" aria-label="Progress"><div class="times"><span id="currentTime">0:00</span><span id="duration">0:00</span></div></div><div class="player-controls"><button class="icon-btn control" id="shuffleBtn" aria-label="Shuffle"><i data-lucide="shuffle"></i></button><button class="icon-btn control" id="prevBtn" aria-label="Previous"><i data-lucide="skip-back"></i></button><button class="play-btn" id="playBtn" aria-label="Play"><i data-lucide="play"></i></button><button class="icon-btn control" id="nextBtn" aria-label="Next"><i data-lucide="skip-forward"></i></button><button class="icon-btn control" id="repeatBtn" aria-label="Repeat"><i data-lucide="repeat"></i></button></div><div class="player-actions"><button class="action-chip" id="lyricsBtn"><i data-lucide="align-justify"></i>Lyrics</button><button class="action-chip" id="videoBtn"><i data-lucide="clapperboard"></i>Video</button><button class="action-chip" id="queueBtn"><i data-lucide="list-music"></i>Queue</button></div><div id="mediaArea" class="media-area hidden"></div><div id="ytPlayer" class="yt-player hidden"></div><audio id="audio" preload="metadata" playsinline></audio></section></div>
+
+  <div id="dialog" class="dialog" aria-hidden="true"><div class="dialog-backdrop" data-close-dialog></div><div class="dialog-card glass"><button class="dialog-close icon-btn glass" data-close-dialog aria-label="Close"><i data-lucide="x"></i></button><div id="dialogContent"></div></div></div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/search.js"></script><script src="js/lyrics.js"></script><script src="js/app.js"></script>
+</body>
+</html>
