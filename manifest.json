@@ -1,23 +1,13 @@
 {
-  "name": "Pulse \u2014 Personal Music",
-  "short_name": "Pulse",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#080a0f",
-  "theme_color": "#0b0d12",
-  "description": "Personal music player PWA",
-  "icons": [
-    {
-      "src": "assets/icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "assets/icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+  "name":"Pulse — Personal Music",
+  "short_name":"Pulse",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#080a0f",
+  "theme_color":"#080a0f",
+  "description":"Personal music PWA with background audio and Media Session controls.",
+  "icons":[
+    {"src":"assets/icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"assets/icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ]
 }

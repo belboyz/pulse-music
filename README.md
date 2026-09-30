@@ -1,22 +1,38 @@
-# Pulse v2 — Personal Music PWA
+# Pulse Music v4
 
-Version 2 adds real YouTube catalog search, a richer player, video playback, LRCLIB lyrics, favorites/history/queue, and local playlists.
+Pulse v4 is a GitHub Pages-ready PWA.
 
-## 1. YouTube search setup
-The static site uses the official YouTube Data API v3 from the browser. Create a Google Cloud project, enable **YouTube Data API v3**, create an API key, then open Pulse → Settings → YouTube Data API key.
+## Main goal
+Search a playable audio catalog, press Play, leave the PWA, and use iPhone Lock Screen / Control Center media controls.
 
-For a public GitHub Pages site, restrict the API key by HTTP referrer to your exact Pages origin and restrict the API to YouTube Data API v3. Do not commit the key into source code.
+## Important source distinction
+- Audius results are the background-audio path. The app uses the official Audius REST stream endpoint.
+- YouTube results are video results. They are not converted into background audio.
+- YouTube Data API key is optional and only needed for YouTube search.
+- Audius API key is optional for read-only usage; a key can increase limits.
 
-The key is stored only in this browser's localStorage. Because this is a static client-side app, an API key used by the browser is not a server secret.
+## Deploy
+Upload the CONTENTS of this folder to the root of your GitHub repository. Do not put the folder itself inside another folder.
 
-## 2. Lyrics
-Lyrics use LRCLIB's public `/api/get` endpoint. It does not require an API key. Requests should be made responsibly and sequentially according to LRCLIB's documentation.
+The workflow is:
+.github/workflows/deploy.yml
 
-## 3. Player
-Playback uses YouTube's official IFrame Player API. The player is controlled through JavaScript and can load/play/pause videos, track state, and queue videos.
+Then open GitHub:
+Settings -> Pages -> Source: GitHub Actions
 
-## 4. GitHub Pages
-Push the folder to the `main` branch. The included GitHub Actions workflow deploys the repository to GitHub Pages.
+## iPhone background playback
+For best results:
+1. Open the deployed site in Safari.
+2. Use Share -> Add to Home Screen.
+3. Open Pulse from the Home Screen.
+4. Search an AUDIO result, not a YouTube video.
+5. Press Play.
+6. Return to the Home Screen or lock the iPhone.
+7. Use the Lock Screen / Control Center media controls.
 
-## 5. Important limitation
-This project does not extract YouTube media streams, bypass DRM, remove platform ads, or scrape private endpoints. It uses official browser APIs/embeds.
+iOS/WebKit can still impose platform-level background-audio limitations or bugs. The app does not bypass those limitations.
+
+## APIs
+Audius: https://docs.audius.co/developers/introduction/overview/
+YouTube Data API: https://developers.google.com/youtube/v3
+LRCLIB: https://lrclib.net/
