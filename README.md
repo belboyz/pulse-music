@@ -1,43 +1,37 @@
-# Pulse Music v7.1
+# Pulse Music — Final
 
-Pulse Music is a personal music-player PWA with a full Liquid Glass redesign.
+Static PWA music interface for GitHub Pages with a Cloudflare Worker search proxy.
 
-## v7.1 redesign
-- Mobile-first Liquid Glass visual system
-- Large editorial Home hero with layered artwork treatment
-- Floating glass navigation with centered player button
-- Floating mini-player above navigation
-- Redesigned Search with All / Audio / YouTube filters
-- Search proxy preconfigured for the deployed Pulse Cloudflare Worker
-- Redesigned Library with collection stats and tabs
-- Redesigned Settings cards and switches
-- Full player sheet with artwork, progress, controls, lyrics, queue and video
-- Responsive desktop layout
-- Favorites, history, queue and local playlists
-- LRCLIB lyrics with synced highlighting
-- Media Session controls for supported audio streams
-- Audius audio playback for legitimate background-capable audio
-- YouTube video playback through the official embedded player
-- PWA/service worker with cache version bumped for v7.1
+## Upload
+Upload the **contents of this folder** to the root of the GitHub repository. Do not create an extra `pulse-music-main` folder inside the repository.
 
-## Search proxy
-The frontend uses this Cloudflare Worker by default:
+## Search
+The frontend is preconfigured to use:
 
 `https://pulse-music-search.7dfwjtvpzn.workers.dev`
 
-You can change it from **Settings → Search proxy**.
-
-The proxy handles search metadata only. YouTube playback remains in the official embedded player. This project does not implement ad bypass, anti-adblock circumvention, DRM circumvention, or YouTube audio extraction.
-
-## GitHub Pages
-Upload the repository contents to the root of your GitHub repository and keep the existing GitHub Pages Actions workflow.
+The Worker proxies YouTube catalog search through available Invidious instances.
 
 ## Cloudflare Worker
-`proxy/wrangler.jsonc` uses `worker.js` as its entry point. Deploy the `proxy` directory with the existing Workers Builds configuration.
+The Worker source is in `proxy/worker.js` and its Wrangler configuration is `proxy/wrangler.jsonc`.
 
-## Local test
-Use an HTTP server rather than `file://`:
+If Cloudflare Workers Builds is already connected to the repository, keep its Root directory set to `/proxy` and deploy with:
 
-`python3 -m http.server 8080`
+`npx wrangler deploy`
 
-Then open `http://localhost:8080/`.
+## GitHub Pages
+The included `.github/workflows/deploy.yml` deploys the repository root to GitHub Pages.
+
+## Features
+- Liquid Glass responsive UI
+- Home, Search, Library and Settings
+- Floating mobile navigation
+- Mini player and full player
+- Local favorites/history/queue/playlists
+- Lyrics via LRCLIB
+- YouTube video playback via official embed
+- Audius audio playback for background-capable audio
+- Media Session controls where supported
+- PWA/service-worker caching
+
+YouTube video playback is kept separate from background audio; the PWA does not bypass YouTube ads, DRM, or playback restrictions.
