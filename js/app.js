@@ -633,7 +633,7 @@ function showVideo(t){
    * bukan melalui tombol audio Pulse.
    */
   const videoUrl=
-    `https://www.youtube-nocookie.com/embed/${encodeURIComponent(
+    `https://www.yout-ube.com/embed/${encodeURIComponent(
       t.videoId
     )}?playsinline=1&rel=0`;
 
