@@ -610,45 +610,24 @@ async function play(t){
    ========================================================= */
 
 function showVideo(t){
+    if(!t.videoId){
+        toast('Video tidak tersedia');
+        return;
+    }
 
-  if(!t.videoId){
-    toast('Video tidak tersedia');
-    return;
-  }
+    state.current=t;
+    state.playing=true;
+    audio.pause();
+    audio.removeAttribute('src');
+    addHistory(t);
+    openPlayer();
 
-  state.current=t;
-  state.playing=false;
+    $('#ytPlayer').classList.remove('hidden');
+    $('#mediaArea').classList.add('hidden');
 
-  audio.pause();
-  audio.removeAttribute('src');
+    $('#ytPlayer').innerHTML=`<iframe src="https://www.youtube.com/embed/${encodeURIComponent(t.videoId)}?autoplay=1&playsinline=1&rel=0" title="YouTube video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
 
-  addHistory(t);
-  openPlayer();
-
-  $('#ytPlayer').classList.remove('hidden');
-  $('#mediaArea').classList.add('hidden');
-
-  /*
-   * youtube-nocookie digunakan untuk embed.
-   * Video diputar melalui player YouTube,
-   * bukan melalui tombol audio Pulse.
-   */
-  const videoUrl=
-    `https://www.yout-ube.com/embed/${encodeURIComponent(
-      t.videoId
-    )}?autoplay=1&playsinline=1&rel=0;'
-
-  $('#ytPlayer').innerHTML=`
-    <iframe
-      src="${videoUrl}"
-      title="${esc(t.title||'YouTube video')}"
-      loading="lazy"
-      allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-      allowfullscreen>
-    </iframe>
-  `;
-
-  renderPlayer();
+    renderPlayer();
 }
 
 /* =========================================================
