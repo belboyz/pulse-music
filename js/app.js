@@ -393,10 +393,11 @@ function updateMini(){
         :''
     );
 
-  $('#miniArt').innerHTML=
-    art
-      ?`<img src="${esc(art)}" alt="" loading="lazy">`
-      :'<i data-lucide="music-2"></i>';
+  $('#playerArt').innerHTML=t.videoId
+?`<img src="https://i.ytimg.com/vi/${encodeURIComponent(t.videoId)}/hqdefault.jpg" alt="">`
+:t.art
+?`<img src="${esc(t.art)}" alt="">`
+:'<i data-lucide="music-2"></i>';
 
   $('#miniPlay').innerHTML=
     `<i data-lucide="${state.playing?'pause':'play'}"></i>`;
