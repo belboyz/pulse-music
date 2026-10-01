@@ -645,7 +645,7 @@ function togglePlay(){
    * YouTube memiliki kontrol player sendiri.
    */
   if(state.current.source==='video'){
-    toast('Video menggunakan kontrol YouTube');
+    showVideo(state.current);
     return;
   }
 
