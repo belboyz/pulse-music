@@ -625,7 +625,7 @@ function showVideo(t){
     $('#ytPlayer').classList.remove('hidden');
     $('#mediaArea').classList.add('hidden');
 
-    $('#ytPlayer').innerHTML=`<iframe src="https://www.youtube.com/embed/${encodeURIComponent(t.videoId)}?autoplay=1&playsinline=1&rel=0" title="YouTube video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+    $('#ytPlayer').innerHTML=`<iframe src="https://www.yout-ube.com/embed/${encodeURIComponent(t.videoId)}?autoplay=1&playsinline=1&rel=0" title="YouTube video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
 
     renderPlayer();
 }
