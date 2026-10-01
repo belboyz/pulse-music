@@ -636,7 +636,7 @@ function showVideo(t){
   const videoUrl=
     `https://www.yout-ube.com/embed/${encodeURIComponent(
       t.videoId
-    )}?playsinline=1&rel=0`;
+    )}?autoplay=1&playsinline=1&rel=0;
 
   $('#ytPlayer').innerHTML=`
     <iframe
