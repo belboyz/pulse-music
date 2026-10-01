@@ -456,10 +456,11 @@ function renderPlayer(){
         :''
     );
 
-  $('#playerArt').innerHTML=
-    art
-      ?`<img src="${esc(art)}" alt="">`
-      :'<i data-lucide="music-2"></i>';
+  $('#playerArt').innerHTML=t.videoId
+  ? `<img src="https://i.ytimg.com/vi/${encodeURIComponent(t.videoId)}/hqdefault.jpg" alt="">`
+  : t.art
+    ? `<img src="${esc(t.art)}" alt="">`
+    : '<i data-lucide="music-2"></i>';
 
   $('#playerBackdrop').style.backgroundImage=
     art
