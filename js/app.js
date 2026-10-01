@@ -368,43 +368,47 @@ function setGlass(on){
    MINI PLAYER
    ========================================================= */
 
-function updateMini(){
+function updateMini() {
+    const m = $('#miniPlayer');
 
-  const m=$('#miniPlayer');
+    if (!state.current) {
+        m.classList.add('hidden');
+        return;
+    }
 
-  if(!state.current){
-    m.classList.add('hidden');
-    return;
-  }
+    m.classList.remove('hidden');
 
-  m.classList.remove('hidden');
+    $('#miniTitle').textContent = state.current.title;
+    $('#miniArtist').textContent = state.current.artist;
 
-  $('#miniTitle').textContent=
-    state.current.title;
+    if (state.current.videoId) {
+        $('#miniArt').innerHTML = `
+            <img
+                src="https://i.ytimg.com/vi/${encodeURIComponent(state.current.videoId)}/hqdefault.jpg"
+                alt=""
+                loading="lazy"
+            >
+        `;
+    } else if (state.current.art) {
+        $('#miniArt').innerHTML = `
+            <img
+                src="${esc(state.current.art)}"
+                alt=""
+                loading="lazy"
+            >
+        `;
+    } else {
+        $('#miniArt').innerHTML = `
+            <i data-lucide="music-2"></i>
+        `;
+    }
 
-  $('#miniArtist').textContent=
-    state.current.artist;
+    $('#miniPlay').innerHTML = `
+        <i data-lucide="${state.playing ? 'pause' : 'play'}"></i>
+    `;
 
-  const art=
-    state.current.art||
-    (
-      state.current.videoId
-        ?youtubeThumb(state.current.videoId)
-        :''
-    );
-
-  $('#playerArt').innerHTML=t.videoId
-?`<img src="https://i.ytimg.com/vi/${encodeURIComponent(t.videoId)}/hqdefault.jpg" alt="">`
-:t.art
-?`<img src="${esc(t.art)}" alt="">`
-:'<i data-lucide="music-2"></i>';
-
-  $('#miniPlay').innerHTML=
-    `<i data-lucide="${state.playing?'pause':'play'}"></i>`;
-
-  icons();
+    icons();
 }
-
 /* =========================================================
    MEDIA SESSION
    ========================================================= */
